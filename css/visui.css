@@ -1,0 +1,51 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+body {
+	background-color: #222;
+}
+
+#ui {
+	left: 37.5%;
+	width: 25%;
+	position: absolute;
+	padding: 1em;
+	background-color: red;
+
+	text-align: center;
+	font-family: Helvetica;
+	font-weight: bold;
+}
+#ready {
+	color: white;
+}
+#player {
+	display: none;
+	background-color: white;
+
+	color: black;
+	font-size: 2em;
+}
+#player:hover {
+	color: #333;
+	background-color: #faebd7;
+}
+
+canvas {
+	position: absolute;
+}
+
+.blocks {
+	background-color: black;
+}
+.blocks #canvas {
+	transform: rotateX(60deg) rotateZ(45deg);
+}
+
+.blocks #extraCanvas1 {
+	transform: translate(-140px, 211.5px) skewY(26.51deg) scale(0.7025);
+}
+.blocks #extraCanvas2 {
+	transform: translate(140px, 211.5px) skewY(-26.51deg) scale(0.7025);
+}
