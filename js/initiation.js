@@ -11,7 +11,6 @@ window.onload = function() {
 	document.getElementById('ready').innerHTML = 'Ready!';
 	document.getElementById('ui').style.backgroundColor = 'green';
 	document.getElementById('player').style.display = 'block';
-	start();
 }
 function start() {
 	document.getElementById('ui').style.display = 'none';
