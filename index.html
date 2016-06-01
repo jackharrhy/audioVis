@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>audioVis | jackharrhy</title>
-		<link rel="stylesheet", href="css/visui.css">
+		<link rel="stylesheet", href="css/audioVis.css">
 	</head>
 	<body>
 		<div id="ui">
@@ -12,13 +12,14 @@
 
 		<canvas class="canvas" id="canvas"></canvas>
 
-		<canvas class="canvas" id="extraCanvas1"></canvas>
-		<canvas class="canvas" id="extraCanvas2"></canvas>
-
 		<audio id="audio" src="mp3/Blip Stream.mp3"></audio>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5.1/dat.gui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r77/three.min.js"></script>
 
 		<script src="js/initial.js"></script>
 
+		<script src="js/mod/field.js"></script>
 		<script src="js/mod/circleBars.js"></script>
 		<script src="js/mod/bars.js"></script>
 		<script src="js/mod/blocks.js"></script>
