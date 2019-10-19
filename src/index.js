@@ -3,6 +3,8 @@ import './styles/main.scss';
 
 const visualizers = [
 	require('./visualizers/circle-bars'),
+	require('./visualizers/bars'),
+	require('./visualizers/blocks'),
 ];
 
 window.onload = () => {
@@ -21,14 +23,12 @@ window.onload = () => {
 
 	ctx.c = canvas.getContext('2d');
 
-	console.log(ctx);
-
 	document.getElementById('ready').innerHTML = 'Ready!';
 	document.getElementById('ui').style.backgroundColor = 'green';
 	document.getElementById('player').style.display = 'block';
 	document.getElementById('player').addEventListener('click', () => {
 		document.getElementById('ui').style.display = 'none';
-		visualizers[0].initialFunction(ctx);
+		visualizers[1].initialFunction(ctx);
 		audio.play();
 	});
 }

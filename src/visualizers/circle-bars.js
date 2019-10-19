@@ -26,12 +26,8 @@ function loopingFunction(ctx) {
 	requestAnimationFrame(loopingFunction.bind(this, ctx));
 }
 
-function initialFunction(ctx) {
-	loopingFunction(ctx);
-}
-
 module.exports = {
 	name: 'circleBars',
 	loopingFunction,
-	initialFunction,
+	initialFunction: (ctx) => loopingFunction(ctx),
 };
