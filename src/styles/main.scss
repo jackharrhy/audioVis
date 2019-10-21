@@ -1,8 +1,6 @@
 html, body {
 	height: 100%;
 	margin: 0;
-}
-body {
 	background-color: #222;
 }
 
@@ -26,10 +24,11 @@ body {
 
 	color: black;
 	font-size: 2em;
-}
-#player:hover {
-	color: #333;
-	background-color: #faebd7;
+
+	:hover {
+		color: #333;
+		background-color: #faebd7;
+	}
 }
 
 canvas {
@@ -38,14 +37,14 @@ canvas {
 
 .blocks {
 	background-color: black;
-}
-.blocks #canvas {
-	transform: rotateX(60deg) rotateZ(45deg);
-}
 
-.blocks #extraCanvas1 {
-	transform: translate(-140px, 211.5px) skewY(26.51deg) scale(0.7025);
-}
-.blocks #extraCanvas2 {
-	transform: translate(140px, 211.5px) skewY(-26.51deg) scale(0.7025);
+	#canvas {
+		transform: rotateX(60deg) rotateZ(45deg);
+	}
+	#extraCanvas1 {
+		transform: translate(-140px, 211.5px) skewY(26.51deg) scale(0.7025);
+	}
+	#extraCanvas2 {
+		transform: translate(140px, 211.5px) skewY(-26.51deg) scale(0.7025);
+	}
 }

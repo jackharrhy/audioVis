@@ -1,0 +1,19 @@
+root = true
+
+[*]
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+
+[*.cr]
+indent_style = space
+indent_size = 2
+
+[{*.md,.babelrc}]
+indent_style = space
+indent_size = 4
+
+[{*.yaml,*.yml,package.json}]
+indent_style = space
+indent_size = 2
