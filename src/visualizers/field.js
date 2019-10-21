@@ -1,91 +1,94 @@
-// TODO migrate
+const localCtx = {};
 
-var field = new visualizer({
-	name: 'field',
-	initialFunction: function () {
-		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+function loopingFunction(ctx) {
+	let {canvas,frame,analyser,frequencyData} = ctx;
+	frame++;
+	analyser.getByteFrequencyData(frequencyData);
 
-		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.setClearColor(0xffffff, 1);
-		document.body.appendChild(this.renderer.domElement);
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 
-		this.parent = new THREE.Object3D();
-		this.scene.add(this.parent);
+	const dimension = Math.sqrt(frequencyData.length);
 
-		this.cubes = [];
+	localCtx.parent.rotation.x += 0.001;
+	localCtx.parent.rotation.y += 0.002;
+	localCtx.parent.rotation.z -= 0.003;
 
-		this.cubeSize = 1;
-		this.realCubeSizeModifier = 0.5;
-		this.realCubeSize = this.cubeSize * this.realCubeSizeModifier;
+	for (let i = 0; i < frequencyData.length; i++) {
+		const cube = localCtx.cubes[i];
 
-		this.cubeGeo = new THREE.BoxGeometry(
-			this.realCubeSize, this.realCubeSize, this.realCubeSize
-		);
+		const level = (Math.floor(i / dimension));
+		const xTarget = i * localCtx.cubeSize;
+		const xOffset = level * (localCtx.cubeSize * dimension);
+		const halfOffset = (localCtx.cubeSize * 32) / 2;
+		cube.position.x = (xTarget - xOffset) - halfOffset;
+		cube.position.y = (level - halfOffset);
 
-		for (var i = 0; i < frequencyData.length; i++) {
-			var material = new THREE.MeshPhongMaterial({ color: 0x111111 });
-			var cube = new THREE.Mesh(this.cubeGeo, material);
-
-			this.cubes[i] = cube;
-			this.parent.add(this.cubes[i]);
-		}
-
-		this.camera.position.z = 40;
-
-		this.light = new THREE.AmbientLight(0xffffff);
-		this.light.position.z = 2;
-		this.scene.add(this.light);
-
-		this.initialThin = 10;
-		this.outerThin = 50;
-		this.dataMulti = 0;
-
-		this.zMulti = 1000;
-
-		this.gui = new dat.GUI();
-		this.gui.add(this, 'initialThin', 0, 100);
-		this.gui.add(this, 'outerThin', 0, 100);
-		this.gui.add(this, 'dataMulti', -1.5, 1.5);
-
-		this.gui.add(this, 'zMulti', -2000, 2000);
-
-		this.loopingFunction();
-	},
-	loopingFunction: function () {
-		frame++;
-		analyser.getByteFrequencyData(frequencyData);
-
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-
-		var dimension = Math.sqrt(frequencyData.length);
-
-		this.parent.rotation.x += 0.001;
-		this.parent.rotation.y += 0.002;
-		this.parent.rotation.z -= 0.003;
-
-		for (var i = 0; i < frequencyData.length; i++) {
-			var cube = this.cubes[i];
-
-			var level = (Math.floor(i / dimension));
-			var xTarget = i * this.cubeSize;
-			var xOffset = level * (this.cubeSize * dimension);
-			var halfOffset = (this.cubeSize * 32) / 2;
-			cube.position.x = (xTarget - xOffset) - halfOffset;
-
-			cube.position.y = (level - halfOffset);
-
-			var data = frequencyData[i] / 255;
-			var sinOffset = Math.sin((frame + i) / (this.initialThin + (data * this.dataMulti))) / this.outerThin;
-
-			cube.position.z = sinOffset * (data * this.zMulti);
-		}
-
-		requestAnimationFrame(this.loopingFunction.bind(this));
-
-		this.renderer.render(this.scene, this.camera);
+		const data = frequencyData[i] / 255;
+		const sinOffset = Math.sin((frame + i) / (localCtx.initialThin + (data * localCtx.dataMulti))) / localCtx.outerThin;
+		cube.position.z = sinOffset * (data * localCtx.zMulti);
 	}
-});
+
+	requestAnimationFrame(loopingFunction.bind(this, ctx));
+	localCtx.renderer.render(localCtx.scene, localCtx.camera);
+}
+
+function initialFunction(ctx) {
+	let {frequencyData} = ctx;
+
+	localCtx.scene = new THREE.Scene();
+	localCtx.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+	localCtx.renderer = new THREE.WebGLRenderer();
+	localCtx.renderer.setPixelRatio(window.devicePixelRatio);
+	localCtx.renderer.setSize(window.innerWidth, window.innerHeight);
+	localCtx.renderer.setClearColor(0xffffff, 1);
+	document.body.appendChild(localCtx.renderer.domElement);
+
+	localCtx.parent = new THREE.Object3D();
+	localCtx.scene.add(localCtx.parent);
+
+	localCtx.cubes = [];
+
+	localCtx.cubeSize = 1;
+	localCtx.realCubeSizeModifier = 0.5;
+	localCtx.realCubeSize = localCtx.cubeSize * localCtx.realCubeSizeModifier;
+
+	localCtx.cubeGeo = new THREE.BoxGeometry(
+		localCtx.realCubeSize, localCtx.realCubeSize, localCtx.realCubeSize
+	);
+
+	for (let i = 0; i < frequencyData.length; i++) {
+		const material = new THREE.MeshPhongMaterial({ color: 0x111111 });
+		const cube = new THREE.Mesh(localCtx.cubeGeo, material);
+
+		localCtx.cubes[i] = cube;
+		localCtx.parent.add(localCtx.cubes[i]);
+	}
+
+	localCtx.camera.position.z = 40;
+
+	localCtx.light = new THREE.AmbientLight(0xffffff);
+	localCtx.light.position.z = 2;
+	localCtx.scene.add(localCtx.light);
+
+	localCtx.initialThin = 10;
+	localCtx.outerThin = 50;
+	localCtx.dataMulti = 0;
+
+	localCtx.zMulti = 1000;
+
+	localCtx.gui = new dat.GUI();
+	localCtx.gui.add(localCtx, 'initialThin', 0, 100);
+	localCtx.gui.add(localCtx, 'outerThin', 0, 100);
+	localCtx.gui.add(localCtx, 'dataMulti', -1.5, 1.5);
+	localCtx.gui.add(localCtx, 'zMulti', -2000, 2000);
+
+	loopingFunction(ctx);
+}
+
+module.exports = {
+	name: 'field',
+	loopingFunction,
+	initialFunction,
+};

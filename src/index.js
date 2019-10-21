@@ -5,6 +5,7 @@ const visualizers = [
 	require('./visualizers/circle-bars'),
 	require('./visualizers/bars'),
 	require('./visualizers/blocks'),
+	require('./visualizers/field'),
 ];
 
 window.onload = () => {
@@ -28,7 +29,8 @@ window.onload = () => {
 	document.getElementById('player').style.display = 'block';
 	document.getElementById('player').addEventListener('click', () => {
 		document.getElementById('ui').style.display = 'none';
-		visualizers[1].initialFunction(ctx);
+		const randomVisualizer = visualizers[Math.floor(Math.random()*visualizers.length)]
+		randomVisualizer.initialFunction(ctx);
 		audio.play();
 	});
 }

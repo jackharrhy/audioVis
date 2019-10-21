@@ -1,4 +1,3 @@
-// TODO migrate
 function loopingFunction(ctx) {
 	let {canvas,c,frame,analyser,frequencyData} = ctx;
 
