@@ -1,5 +1,6 @@
 import "normalize.css";
 import "./main.css";
+import blipStream from "./mp3/Blip Stream.mp3";
 
 let visualizers = [
 	import("./visualizers/circle-bars"),
@@ -18,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		canvas: document.getElementById("canvas"),
 		frame: -1,
 	};
+
+	audio.src = blipStream;
 
 	ctx.audioSrc = ctx.audioContext.createMediaElementSource(ctx.audio);
 	ctx.analyser = ctx.audioContext.createAnalyser();

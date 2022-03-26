@@ -12,7 +12,6 @@ jobs:
         run: |
           npm ci
           npm run build -- --base=/audioVis/
-          cp -r mp3 dist/
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
