@@ -1,7 +1,9 @@
 const localCtx = {};
 
-function loopingFunction(ctx) {
-	let {canvas,frame,analyser,frequencyData} = ctx;
+export const name = "field";
+
+export function loopingFunction(ctx) {
+	let { canvas, frame, analyser, frequencyData } = ctx;
 	frame++;
 	analyser.getByteFrequencyData(frequencyData);
 
@@ -17,15 +19,18 @@ function loopingFunction(ctx) {
 	for (let i = 0; i < frequencyData.length; i++) {
 		const cube = localCtx.cubes[i];
 
-		const level = (Math.floor(i / dimension));
+		const level = Math.floor(i / dimension);
 		const xTarget = i * localCtx.cubeSize;
 		const xOffset = level * (localCtx.cubeSize * dimension);
 		const halfOffset = (localCtx.cubeSize * 32) / 2;
-		cube.position.x = (xTarget - xOffset) - halfOffset;
-		cube.position.y = (level - halfOffset);
+		cube.position.x = xTarget - xOffset - halfOffset;
+		cube.position.y = level - halfOffset;
 
 		const data = frequencyData[i] / 255;
-		const sinOffset = Math.sin((frame + i) / (localCtx.initialThin + (data * localCtx.dataMulti))) / localCtx.outerThin;
+		const sinOffset =
+			Math.sin(
+				(frame + i) / (localCtx.initialThin + data * localCtx.dataMulti)
+			) / localCtx.outerThin;
 		cube.position.z = sinOffset * (data * localCtx.zMulti);
 	}
 
@@ -33,11 +38,16 @@ function loopingFunction(ctx) {
 	localCtx.renderer.render(localCtx.scene, localCtx.camera);
 }
 
-function initialFunction(ctx) {
-	let {frequencyData} = ctx;
+export function initialFunction(ctx) {
+	let { frequencyData } = ctx;
 
 	localCtx.scene = new THREE.Scene();
-	localCtx.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+	localCtx.camera = new THREE.PerspectiveCamera(
+		75,
+		window.innerWidth / window.innerHeight,
+		0.1,
+		1000
+	);
 
 	localCtx.renderer = new THREE.WebGLRenderer();
 	localCtx.renderer.setPixelRatio(window.devicePixelRatio);
@@ -55,7 +65,9 @@ function initialFunction(ctx) {
 	localCtx.realCubeSize = localCtx.cubeSize * localCtx.realCubeSizeModifier;
 
 	localCtx.cubeGeo = new THREE.BoxGeometry(
-		localCtx.realCubeSize, localCtx.realCubeSize, localCtx.realCubeSize
+		localCtx.realCubeSize,
+		localCtx.realCubeSize,
+		localCtx.realCubeSize
 	);
 
 	for (let i = 0; i < frequencyData.length; i++) {
@@ -79,16 +91,10 @@ function initialFunction(ctx) {
 	localCtx.zMulti = 1000;
 
 	localCtx.gui = new dat.GUI();
-	localCtx.gui.add(localCtx, 'initialThin', 0, 100);
-	localCtx.gui.add(localCtx, 'outerThin', 0, 100);
-	localCtx.gui.add(localCtx, 'dataMulti', -1.5, 1.5);
-	localCtx.gui.add(localCtx, 'zMulti', -2000, 2000);
+	localCtx.gui.add(localCtx, "initialThin", 0, 100);
+	localCtx.gui.add(localCtx, "outerThin", 0, 100);
+	localCtx.gui.add(localCtx, "dataMulti", -1.5, 1.5);
+	localCtx.gui.add(localCtx, "zMulti", -2000, 2000);
 
 	loopingFunction(ctx);
 }
-
-module.exports = {
-	name: 'field',
-	loopingFunction,
-	initialFunction,
-};

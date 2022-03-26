@@ -1,18 +1,21 @@
-import 'normalize.css';
-import './styles/main.scss';
+import "normalize.css";
+import "./main.css";
 
-const visualizers = [
-	require('./visualizers/circle-bars'),
-	require('./visualizers/bars'),
-	require('./visualizers/blocks'),
-	require('./visualizers/field'),
+let visualizers = [
+	import("./visualizers/circle-bars"),
+	import("./visualizers/bars"),
+	import("./visualizers/blocks"),
+	import("./visualizers/field"),
 ];
 
-window.onload = () => {
+// dom on ready
+document.addEventListener("DOMContentLoaded", async () => {
+	visualizers = await Promise.all(visualizers);
+
 	const ctx = {
 		audioContext: new (window.AudioContext || window.webkitAudioContext)(),
-		audio: document.getElementById('audio'),
-		canvas: document.getElementById('canvas'),
+		audio: document.getElementById("audio"),
+		canvas: document.getElementById("canvas"),
 		frame: -1,
 	};
 
@@ -22,15 +25,22 @@ window.onload = () => {
 	ctx.audioSrc.connect(ctx.analyser);
 	ctx.analyser.connect(ctx.audioContext.destination);
 
-	ctx.c = canvas.getContext('2d');
+	ctx.c = canvas.getContext("2d");
 
-	document.getElementById('ready').innerHTML = 'Ready!';
-	document.getElementById('ui').style.backgroundColor = 'green';
-	document.getElementById('player').style.display = 'block';
-	document.getElementById('player').addEventListener('click', () => {
-		document.getElementById('ui').style.display = 'none';
-		const randomVisualizer = visualizers[Math.floor(Math.random()*visualizers.length)]
-		randomVisualizer.initialFunction(ctx);
+	document.getElementById("ready").innerHTML = "Ready!";
+	document.getElementById("ui").style.backgroundColor = "green";
+	document.getElementById("player").style.display = "block";
+	document.getElementById("player").addEventListener("click", () => {
+		document.getElementById("ui").style.display = "none";
+		const randomVisualizer =
+			visualizers[Math.floor(Math.random() * visualizers.length)];
+
+		const startingFunction =
+			randomVisualizer.initialFunction ||
+			randomVisualizer.loopingFunction;
+
+		startingFunction(ctx);
+
 		audio.play();
 	});
-}
+});
