@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "normalize.css": "^8.0.1",
-    "vite": "^2.8.6"
+    "vite": "^2.9.16"
   }
 }
